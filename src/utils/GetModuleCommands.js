@@ -91,18 +91,19 @@ export default function getModuleCommands(module, waypoints) {
           addDepress: "true",
         });
 
-        if (waypoint.longHem === "E") { // Type hemisphere into scratchpad
+        // Type hemisphere into scratchpad
+        if (waypoint.longHem === "E") { // East
           payload.push({
             device: f15eUFCDevice,
-            code: 3008,
+            code: f15eNumberCodes[6],
             delay: 10,
             activate: 1,
             addDepress: "true",
           });
         } else {
-          payload.push({
+          payload.push({ // West
             device: f15eUFCDevice,
-            code: 3006,
+            code: f15eNumberCodes[4],
             delay: 10,
             activate: 1,
             addDepress: "true",
@@ -158,7 +159,7 @@ export default function getModuleCommands(module, waypoints) {
     case "F-16D_Barak_30":
     case "F-16D_Barak_40":
     case "F-16I": 
-    
+
     {  
       let payload = [
         {
