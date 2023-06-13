@@ -111,6 +111,23 @@ const WaypointItem = (props) => {
                     ></Input>
                   </Grid>
                 </Grid>
+
+                <Grid container spacing={3}>
+                  <Grid item xs={3}>
+                    <input 
+                      type="checkbox"
+                       
+                      onChange={(e) => props.onIsTarget(e, props.id)}>
+
+                      </input>
+                  </Grid>
+                  <Grid item xs={9}>
+                    <Typography variant="overline" color="grey">
+                      isTarget F15E
+                    </Typography>
+                  </Grid>
+                  
+                </Grid>
               </Box>
             </Stack>
           ) : (

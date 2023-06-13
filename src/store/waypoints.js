@@ -16,6 +16,7 @@ const waypointsSlice = createSlice({
         lat: payload.lat,
         long: payload.long,
         elev: payload.elev,
+        isTarget: false,
       });
       state.idCounter++;
     },
@@ -30,6 +31,12 @@ const waypointsSlice = createSlice({
         (i) => i.id === action.payload.id
       );
       state.dcsWaypoints[index]["elev"] = action.payload.elev;
+    },
+    changeIsTarget(state, action) {
+      const index = state.dcsWaypoints.findIndex(
+        (i) => i.id === action.payload.id
+      );
+      state.dcsWaypoints[index]["isTarget"] = action.payload.isTarget;
     },
     delete(state, action) {
       const index = state.dcsWaypoints.findIndex(

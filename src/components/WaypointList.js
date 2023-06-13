@@ -46,6 +46,12 @@ const WaypointList = () => {
     dispatch(waypointsActions.changeElevation({ id, elev }));
   };
 
+  const isTargetHandler = (event, id) => {
+    const isTarget = event.target.checked;
+    dispatch(waypointsActions.changeIsTarget({ id, isTarget }));
+    console.log(dcsWaypoints);
+  };
+
   const handleDragEnd = (event) => {
     const { active, over } = event;
     if (active.id !== over.id) {
@@ -92,6 +98,7 @@ const WaypointList = () => {
                     latHem={wp.latHem}
                     longHem={wp.longHem}
                     onRename={renameHandler}
+                    onIsTarget={isTargetHandler}
                     onElevation={elevationHandler}
                     onDelete={deleteHandler}
                   />
