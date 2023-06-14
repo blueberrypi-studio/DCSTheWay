@@ -289,7 +289,6 @@ export default function getModuleCommands(module, waypoints) {
         for (let i = 0; i < waypoint.long.length; i++) {
           // eslint-disable-next-line default-case
           for (const char of waypoint.long.charAt(i)) {
-            
             if (char !== ".") {
               payload.push({
                 device: 17,
