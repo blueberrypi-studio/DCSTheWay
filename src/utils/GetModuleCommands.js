@@ -1,8 +1,12 @@
+// global variables for number codes for various aircraft for easy access
+let f16cNumberCodes = {"0": 3002, "1": 3003, "2": 3004, "3": 3005, "4": 3006, "5": 3007, "6": 3008, "7": 3009, "8": 3010, "9": 3011};
+let f15eNumberCodes = {"0": 3000, "1": 3001, "2": 3002, "3": 3003, "4": 3004, "5": 3005, "6": 3006, "7": 3007, "8": 3008, "9": 3009};
+
 export default function getModuleCommands(module, waypoints) {
   switch (module) {
     case "F-15E_S4+":
       let f15eUFCDevice = 17;
-      let f15eNumberCodes = {0: 3000, 1: 3001, 2: 3002, 3: 3003, 4: 3004, 5: 3005, 6: 3006, 7: 3007, 8: 3008, 9: 3009}; // hopefully will reduce length of code 
+       
       let payload = [
         { // type 0 into scratchpad
           device: f15eUFCDevice,
@@ -26,9 +30,10 @@ export default function getModuleCommands(module, waypoints) {
           addDepress: "true",
         }
       ];
-      for (const waypoint of waypoints) {
-        let waypointNumber = waypoints.indexOf(waypoint);
+      for (const waypoint of waypoints) { // iterate through waypoints
+        let waypointNumber = waypoints.indexOf(waypoint) + 1; // TODO check if the +1 is needed
         for (let i = 0; i < waypointNumber.length; i++) { // split waypoint number into individual digits
+          // eslint-disable-next-line default-case
           payload.push({
             device: f15eUFCDevice,
             code: f15eNumberCodes[waypointNumber.charAt(i)],
@@ -36,7 +41,7 @@ export default function getModuleCommands(module, waypoints) {
             activate: 1,
             addDepress: "true",
           });
-        };
+        }
 
         payload.push({ // Press Shift
           device: f15eUFCDevice,
@@ -64,15 +69,20 @@ export default function getModuleCommands(module, waypoints) {
           });
         }
 
-        for (let i = 0; i < waypoint.lat.length; i++) { // enter latitude into scratchpad
+        //Type lat
+        for (let i = 0; i < waypoint.lat.length; i++) { // enter each digit of lat into scratchpad
           // eslint-disable-next-line default-case
-          payload.push({
-            device: f15eUFCDevice,
-            code: f15eNumberCodes[waypoint.lat.charAt(i)],
-            delay: 10,
-            activate: 1,
-            addDepress: "true",
-          });
+          for (const char of waypoint.lat.charAt(i)) {
+            if (char !== ".") {
+              payload.push({
+                device: f15eUFCDevice,
+                code: f15eNumberCodes[char],
+                delay: 10,
+                activate: 1,
+                addDepress: "true",
+              });
+            }
+          }
         }
 
         payload.push({ // enter latitutde into UFC
@@ -110,15 +120,19 @@ export default function getModuleCommands(module, waypoints) {
           });
         }
 
-        for (let i = 0; i < waypoint.long.length; i++) { // enter longitude into scratchpad
+        for (let i = 0; i < waypoint.long.length; i++) { // enter each digit of longtitude into scratchpad
           // eslint-disable-next-line default-case
-          payload.push({
-            device: f15eUFCDevice,
-            code: f15eNumberCodes[waypoint.long.charAt(i)],
-            delay: 10,
-            activate: 1,
-            addDepress: "true",
-          });
+          for (const char of waypoint.long.charAt(i)) {
+            if (char !== ".") {
+              payload.push({
+                device: f15eUFCDevice,
+                code: f15eNumberCodes[char],
+                delay: 10, 
+                activate: 1,
+                addDepress: "true",
+              });
+            }
+          }
         }
 
         payload.push({ // enter longtitude into UFC
@@ -129,16 +143,19 @@ export default function getModuleCommands(module, waypoints) {
           addDepress: "true",
         });
 
-        
-        for (let i = 0; i < waypoint.elev.length; i++) { // Type Elevation into scratchpad
+        for (let i = 0; i < waypoint.elevation.length; i++) { // enter each digit of elevation into scratchpad
           // eslint-disable-next-line default-case
-          payload.push({
-            device: f15eUFCDevice,
-            code: f15eNumberCodes[waypoint.elev.charAt(i)],
-            delay: 10,
-            activate: 1,
-            addDepress: "true",
-          });
+          for (const char of waypoint.elevation.charAt(i)) {
+            if (char !== ".") {
+              payload.push({
+                device: f15eUFCDevice,
+                code: f15eNumberCodes[char],
+                delay: 10,
+                activate: 1,
+                addDepress: "true",
+              });
+            }
+          }
         }
 
         payload.push({ // enter elevation into UFC
@@ -222,97 +239,16 @@ export default function getModuleCommands(module, waypoints) {
         //Type lat
         for (let i = 0; i < waypoint.lat.length; i++) {
           // eslint-disable-next-line default-case
-          switch (waypoint.lat.charAt(i)) {
-            case "1":
+          for (const char of waypoint.lat.charAt(i)) {
+            if (char !== ".") {
               payload.push({
                 device: 17,
-                code: 3003,
+                code: f16cNumberCodes[char],
                 delay: 10,
                 activate: 1,
                 addDepress: "true",
               });
-              break;
-            case "2":
-              payload.push({
-                device: 17,
-                code: 3004,
-                delay: 10,
-                activate: 1,
-                addDepress: "true",
-              });
-              break;
-            case "3":
-              payload.push({
-                device: 17,
-                code: 3005,
-                delay: 10,
-                activate: 1,
-                addDepress: "true",
-              });
-              break;
-            case "4":
-              payload.push({
-                device: 17,
-                code: 3006,
-                delay: 10,
-                activate: 1,
-                addDepress: "true",
-              });
-              break;
-            case "5":
-              payload.push({
-                device: 17,
-                code: 3007,
-                delay: 10,
-                activate: 1,
-                addDepress: "true",
-              });
-              break;
-            case "6":
-              payload.push({
-                device: 17,
-                code: 3008,
-                delay: 10,
-                activate: 1,
-                addDepress: "true",
-              });
-              break;
-            case "7":
-              payload.push({
-                device: 17,
-                code: 3009,
-                delay: 10,
-                activate: 1,
-                addDepress: "true",
-              });
-              break;
-            case "8":
-              payload.push({
-                device: 17,
-                code: 3010,
-                delay: 10,
-                activate: 1,
-                addDepress: "true",
-              });
-              break;
-            case "9":
-              payload.push({
-                device: 17,
-                code: 3011,
-                delay: 10,
-                activate: 1,
-                addDepress: "true",
-              });
-              break;
-            case "0":
-              payload.push({
-                device: 17,
-                code: 3002,
-                delay: 10,
-                activate: 1,
-                addDepress: "true",
-              });
-              break;
+            }
           }
         }
         //enter
@@ -352,97 +288,17 @@ export default function getModuleCommands(module, waypoints) {
         //type long
         for (let i = 0; i < waypoint.long.length; i++) {
           // eslint-disable-next-line default-case
-          switch (waypoint.long.charAt(i)) {
-            case "1":
+          for (const char of waypoint.long.charAt(i)) {
+            
+            if (char !== ".") {
               payload.push({
                 device: 17,
-                code: 3003,
+                code: f16cNumberCodes[char],
                 delay: 10,
                 activate: 1,
                 addDepress: "true",
               });
-              break;
-            case "2":
-              payload.push({
-                device: 17,
-                code: 3004,
-                delay: 10,
-                activate: 1,
-                addDepress: "true",
-              });
-              break;
-            case "3":
-              payload.push({
-                device: 17,
-                code: 3005,
-                delay: 10,
-                activate: 1,
-                addDepress: "true",
-              });
-              break;
-            case "4":
-              payload.push({
-                device: 17,
-                code: 3006,
-                delay: 10,
-                activate: 1,
-                addDepress: "true",
-              });
-              break;
-            case "5":
-              payload.push({
-                device: 17,
-                code: 3007,
-                delay: 10,
-                activate: 1,
-                addDepress: "true",
-              });
-              break;
-            case "6":
-              payload.push({
-                device: 17,
-                code: 3008,
-                delay: 10,
-                activate: 1,
-                addDepress: "true",
-              });
-              break;
-            case "7":
-              payload.push({
-                device: 17,
-                code: 3009,
-                delay: 10,
-                activate: 1,
-                addDepress: "true",
-              });
-              break;
-            case "8":
-              payload.push({
-                device: 17,
-                code: 3010,
-                delay: 10,
-                activate: 1,
-                addDepress: "true",
-              });
-              break;
-            case "9":
-              payload.push({
-                device: 17,
-                code: 3011,
-                delay: 10,
-                activate: 1,
-                addDepress: "true",
-              });
-              break;
-            case "0":
-              payload.push({
-                device: 17,
-                code: 3002,
-                delay: 10,
-                activate: 1,
-                addDepress: "true",
-              });
-              break;
+            }
           }
         }
         //enter
@@ -464,97 +320,16 @@ export default function getModuleCommands(module, waypoints) {
         //type elev
         for (let i = 0; i < waypoint.elev.length; i++) {
           // eslint-disable-next-line default-case
-          switch (waypoint.elev.charAt(i)) {
-            case "1":
+          for (const char of waypoint.elev.charAt(i)) {
+            if (char !== ".") {
               payload.push({
                 device: 17,
-                code: 3003,
+                code: f16cNumberCodes[char],
                 delay: 10,
                 activate: 1,
                 addDepress: "true",
               });
-              break;
-            case "2":
-              payload.push({
-                device: 17,
-                code: 3004,
-                delay: 10,
-                activate: 1,
-                addDepress: "true",
-              });
-              break;
-            case "3":
-              payload.push({
-                device: 17,
-                code: 3005,
-                delay: 10,
-                activate: 1,
-                addDepress: "true",
-              });
-              break;
-            case "4":
-              payload.push({
-                device: 17,
-                code: 3006,
-                delay: 10,
-                activate: 1,
-                addDepress: "true",
-              });
-              break;
-            case "5":
-              payload.push({
-                device: 17,
-                code: 3007,
-                delay: 10,
-                activate: 1,
-                addDepress: "true",
-              });
-              break;
-            case "6":
-              payload.push({
-                device: 17,
-                code: 3008,
-                delay: 10,
-                activate: 1,
-                addDepress: "true",
-              });
-              break;
-            case "7":
-              payload.push({
-                device: 17,
-                code: 3009,
-                delay: 10,
-                activate: 1,
-                addDepress: "true",
-              });
-              break;
-            case "8":
-              payload.push({
-                device: 17,
-                code: 3010,
-                delay: 10,
-                activate: 1,
-                addDepress: "true",
-              });
-              break;
-            case "9":
-              payload.push({
-                device: 17,
-                code: 3011,
-                delay: 10,
-                activate: 1,
-                addDepress: "true",
-              });
-              break;
-            case "0":
-              payload.push({
-                device: 17,
-                code: 3002,
-                delay: 10,
-                activate: 1,
-                addDepress: "true",
-              });
-              break;
+            }
           }
         }
         //enter
